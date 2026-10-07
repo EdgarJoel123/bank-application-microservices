@@ -15,6 +15,7 @@ import lombok.Setter;
 @Table(name = "accounts")
 public class Account extends Base {
 
+    @Column(unique = true)
     private String number;
     private String type;
     private double initialAmount;

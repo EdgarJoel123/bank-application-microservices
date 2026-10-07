@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping(
-        value = "/api/transactions",
+        value = {"/api/transactions", "/api/transacciones"},
         produces = MediaType.APPLICATION_JSON_VALUE
 )
 @Tag(

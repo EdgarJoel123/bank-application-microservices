@@ -1,0 +1,428 @@
+{
+  "info": {
+    "_postman_id": "bank-application-microservices",
+    "name": "Bank Application Microservices",
+    "description": "Colección Postman para probar Client y Account Microservices.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "clientBaseUrl",
+      "value": "http://localhost:8001"
+    },
+    {
+      "key": "accountBaseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "clientId",
+      "value": "1"
+    },
+    {
+      "key": "accountId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Crear cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dni\": \"1800000001\",\n  \"name\": \"Cliente Prueba\",\n  \"password\": \"123456\",\n  \"gender\": \"M\",\n  \"age\": 30,\n  \"address\": \"Ambato\",\n  \"phone\": \"0999999999\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{clientBaseUrl}}/api/clientes",
+              "host": [
+                "{{clientBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.id) {",
+                  "        pm.collectionVariables.set('clientId', response.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{clientBaseUrl}}/api/clientes",
+              "host": [
+                "{{clientBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar cliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{clientBaseUrl}}/api/clientes/{{clientId}}",
+              "host": [
+                "{{clientBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes",
+                "{{clientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dni\": \"1800000001\",\n  \"name\": \"Cliente Prueba Actualizado\",\n  \"password\": \"123456\",\n  \"gender\": \"M\",\n  \"age\": 31,\n  \"address\": \"Ambato\",\n  \"phone\": \"0999999999\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{clientBaseUrl}}/api/clientes/{{clientId}}",
+              "host": [
+                "{{clientBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes",
+                "{{clientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{clientBaseUrl}}/api/clientes/{{clientId}}",
+              "host": [
+                "{{clientBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "clientes",
+                "{{clientId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cuentas",
+      "item": [
+        {
+          "name": "Crear cuenta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"number\": \"001-001\",\n  \"type\": \"SAVINGS\",\n  \"initialAmount\": 1000.00,\n  \"isActive\": true,\n  \"clientId\": {{clientId}}\n}"
+            },
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/cuentas",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cuentas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    if (response.id) {",
+                  "        pm.collectionVariables.set('accountId', response.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar cuentas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/cuentas",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cuentas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Consultar cuenta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/cuentas/{{accountId}}",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cuentas",
+                "{{accountId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar cuenta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"number\": \"001-001\",\n  \"type\": \"SAVINGS\",\n  \"initialAmount\": 1000.00,\n  \"isActive\": true,\n  \"clientId\": {{clientId}}\n}"
+            },
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/cuentas/{{accountId}}",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cuentas",
+                "{{accountId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar cuenta",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/cuentas/{{accountId}}",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cuentas",
+                "{{accountId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transacciones",
+      "item": [
+        {
+          "name": "Crear depósito",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"DEPOSIT\",\n  \"amount\": 500.00,\n  \"accountId\": {{accountId}}\n}"
+            },
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/transacciones",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transacciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear retiro válido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"WITHDRAWAL\",\n  \"amount\": -300.00,\n  \"accountId\": {{accountId}}\n}"
+            },
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/transacciones",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transacciones"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Retiro sin saldo suficiente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"WITHDRAWAL\",\n  \"amount\": -999999.00,\n  \"accountId\": {{accountId}}\n}"
+            },
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/transacciones",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transacciones"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Debe rechazar saldo insuficiente', function () {",
+                  "    pm.expect(pm.response.code).to.equal(400);",
+                  "    pm.expect(pm.response.text()).to.include('Saldo no disponible');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar transacciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/transacciones",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transacciones"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reporte",
+      "item": [
+        {
+          "name": "Estado de cuenta por cliente y fechas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{accountBaseUrl}}/api/transactions/clients/{{clientId}}/report?dateTransactionStart=2026-10-01&dateTransactionEnd=2026-10-31",
+              "host": [
+                "{{accountBaseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transactions",
+                "clients",
+                "{{clientId}}",
+                "report"
+              ],
+              "query": [
+                {
+                  "key": "dateTransactionStart",
+                  "value": "2026-10-01"
+                },
+                {
+                  "key": "dateTransactionEnd",
+                  "value": "2026-10-31"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

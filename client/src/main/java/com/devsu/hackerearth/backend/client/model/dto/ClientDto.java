@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.validation.constraints.NotBlank;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
@@ -24,23 +25,27 @@ public class ClientDto {
     )
     private Long id;
 
+    @NotBlank(message = "El DNI es obligatorio")
     @Schema(
             description = "Número de identificación del cliente",
             example = "1801234567"
     )
     private String dni;
 
+    @NotBlank(message = "El nombre es obligatorio")
     @Schema(
             description = "Nombre completo del cliente",
             example = "Juan Pérez"
     )
     private String name;
 
-    @Schema(
-            description = "Contraseña asociada al cliente",
-            example = "123456"
-    )
-    private String password;
+    
+    @NotBlank(message = "La contraseña es obligatoria")
+@Schema(
+        description = "Contraseña asociada al cliente",
+        example = "123456"
+)
+private String password;
 
     @Schema(
             description = "Género del cliente",

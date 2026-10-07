@@ -14,7 +14,6 @@ import com.devsu.hackerearth.backend.client.model.dto.ClientDto;
 import com.devsu.hackerearth.backend.client.model.dto.PartialClientDto;
 import com.devsu.hackerearth.backend.client.repository.ClientRepository;
 
-
 @Service
 public class ClientServiceImpl implements ClientService {
 
@@ -24,6 +23,11 @@ public class ClientServiceImpl implements ClientService {
 	public ClientServiceImpl(ClientRepository clientRepository) {
 		this.clientRepository = clientRepository;
 	}
+
+    @Autowired(required = false)
+public void setClientEventPublisher(ClientEventPublisher clientEventPublisher) {
+    this.clientEventPublisher = clientEventPublisher;
+}
 
     @Override
     @Transactional(readOnly = true)

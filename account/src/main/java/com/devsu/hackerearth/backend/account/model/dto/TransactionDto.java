@@ -9,6 +9,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,6 +32,7 @@ public class TransactionDto {
     )
     private Date date;
 
+    @NotBlank(message = "El tipo de transacción es obligatorio")
     @Schema(
             description = "Tipo de transacción",
             example = "DEPOSIT"
@@ -46,6 +51,7 @@ public class TransactionDto {
     )
     private double balance;
 
+    @NotNull(message = "La cuenta es obligatoria")
     @Schema(
             description = "Identificador de la cuenta asociada a la transacción",
             example = "1"
