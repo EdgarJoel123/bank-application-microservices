@@ -51,9 +51,7 @@ public class ClientController {
     })
     @GetMapping
     public ResponseEntity<List<ClientDto>> getAll() {
-        List<ClientDto> response = clientService.getAll();
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(clientService.getAll());
     }
 
     @Operation(summary = "Get client by id")
@@ -64,9 +62,14 @@ public class ClientController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<ClientDto> get(@PathVariable Long id) {
-        ClientDto response = clientService.getById(id);
 
-        return ResponseEntity.ok(response);
+        ClientDto client = clientService.getById(id);
+
+        if (client == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(client);
     }
 
     @Operation(summary = "Create client")
@@ -80,11 +83,11 @@ public class ClientController {
     public ResponseEntity<ClientDto> create(
             @Valid @RequestBody ClientDto clientDto) {
 
-        ClientDto response = clientService.create(clientDto);
+        ClientDto createdClient = clientService.create(clientDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(createdClient);
     }
 
     @Operation(summary = "Update client")
@@ -101,12 +104,20 @@ public class ClientController {
     public ResponseEntity<ClientDto> update(
             @PathVariable Long id,
             @Valid @RequestBody ClientDto clientDto) {
-
+    
+        ClientDto existingClient = clientService.getById(id);
+    
+        if (existingClient == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
         clientDto.setId(id);
-
-        ClientDto response = clientService.update(clientDto);
-
-        return ResponseEntity.ok(response);
+    
+        ClientDto updatedClient = clientService.update(clientDto);
+    
+        return ResponseEntity.ok(
+                updatedClient != null ? updatedClient : clientDto
+        );
     }
 
     @Operation(summary = "Update client status")
@@ -124,10 +135,16 @@ public class ClientController {
             @PathVariable Long id,
             @Valid @RequestBody PartialClientDto partialClientDto) {
 
-        ClientDto response =
+        ClientDto existingClient = clientService.getById(id);
+
+        if (existingClient == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ClientDto updatedClient =
                 clientService.partialUpdate(id, partialClientDto);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(updatedClient);
     }
 
     @Operation(summary = "Delete client")
@@ -138,6 +155,13 @@ public class ClientController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        ClientDto existingClient = clientService.getById(id);
+
+        if (existingClient == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         clientService.deleteById(id);
 
         return ResponseEntity.noContent().build();
