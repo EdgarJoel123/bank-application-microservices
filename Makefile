@@ -2,14 +2,24 @@
 
 run:
 	{ \
-		mvn -f account/pom.xml -Dtest=sampleTest.java test || true; \
-		mvn -f client/pom.xml -Dtest=sampleTest.java test || true; \
-		junit-merge -o xunitreport.xml account/target/surefire-reports/*sampleTest.xml client/target/surefire-reports/*sampleTest.xml; \
+		mvn -f account/pom.xml -Dtest=sampleTest test || true; \
+		mvn -f client/pom.xml -Dtest=sampleTest test || true; \
+		REPORTS=$$(find account/target/surefire-reports client/target/surefire-reports -type f -name 'TEST-*.xml' 2>/dev/null); \
+		if [ -z "$$REPORTS" ]; then \
+			echo "No se encontraron reportes JUnit"; \
+			exit 1; \
+		fi; \
+		junit-merge -o xunitreport.xml $$REPORTS; \
 	}
 
 submit:
 	{ \
-		mvn -f account/pom.xml -Dtest=mainTest.java test || true; \
-		mvn -f client/pom.xml -Dtest=mainTest.java test || true; \
-		junit-merge -o xunitreport.xml account/target/surefire-reports/*mainTest.xml client/target/surefire-reports/*mainTest.xml; \
+		mvn -f account/pom.xml test || true; \
+		mvn -f client/pom.xml test || true; \
+		REPORTS=$$(find account/target/surefire-reports client/target/surefire-reports -type f -name 'TEST-*.xml' 2>/dev/null); \
+		if [ -z "$$REPORTS" ]; then \
+			echo "No se encontraron reportes JUnit"; \
+			exit 1; \
+		fi; \
+		junit-merge -o xunitreport.xml $$REPORTS; \
 	}
